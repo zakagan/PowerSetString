@@ -34,7 +34,7 @@ void printPsetAndHashTest(Node *stack, HashMap* m) {
 void calculatePowerSet(char *str, int str_length) {
 	int i;
 	Node *temp_stack = NULL;
-	Node* item=NULL;
+	Node *item=NULL;
 	// this stack will be populated and used to replace the need for recursive calls
 	printf("%s\n", "Filling stack with single chars from base string");
 	for(i=0;i<str_length;i++) { 
@@ -42,11 +42,11 @@ void calculatePowerSet(char *str, int str_length) {
 		printf("\t %c\n", str[i]);
 	}
 	printf("%s\n", "Calculating Power Set...");
-	push(&saved_stack, "", 0, 0);                   // Adds the empty set
+	push(&saved_stack, "", 0, -1);                   // Adds the empty set
 	while(temp_stack!=NULL) {
 		item=pop(&temp_stack);
 		printf("\t popped %s from the stack \n",item->S);
-		push(&saved_stack, item->S, item->length, 0);    // consider removing saved_map and saved_stack from this function
+		push(&saved_stack, item->S, item->length, str_length);    // consider removing saved_map and saved_stack from this function
 		hashMapInsert(saved_map, item);
 		printf("\t saved %s\n",saved_stack->S);
 
