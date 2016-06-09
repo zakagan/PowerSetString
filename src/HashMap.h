@@ -23,7 +23,7 @@ HashMap* hashMapCreate(size_t size);
 
 void hashMapDestroy(HashMap* m);
 
-void hashMapInsert(HashMap* m, Node* n);
+int hashMapInsert(HashMap* m, Node* n);
 
 
 #endif

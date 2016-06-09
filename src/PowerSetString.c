@@ -31,8 +31,8 @@ void printPsetAndHashTest(Node *stack, HashMap* m) {
 	printf("\t};\n");					
 }
 
-void calculatePowerSet(char *str, int str_length) {
-	int i;
+int calculatePowerSet(char *str, int str_length) {
+	int i, collisions=0;
 	Node *temp_stack = NULL;
 	Node *item=NULL;
 	// this stack will be populated and used to replace the need for recursive calls
@@ -47,7 +47,7 @@ void calculatePowerSet(char *str, int str_length) {
 		item=pop(&temp_stack);
 		printf("\t popped %s from the stack \n",item->S);
 		push(&saved_stack, item->S, item->length, str_length);    // consider removing saved_map and saved_stack from this function
-		hashMapInsert(saved_map, item);
+		collisions += hashMapInsert(saved_map, item);
 		printf("\t saved %s\n",saved_stack->S);
 
 		for(i=item->last_index; i<str_length-1; i++){                         //iterates last item through the size of the subset
@@ -60,22 +60,34 @@ void calculatePowerSet(char *str, int str_length) {
 		free(item);	
 	}
 	printf("%s\n","Power Set calculation complete");
+	return collisions;
 }
 
 int main(int argc, char **argv) {
-	if (argc!=2) {
-		printf("%s\n", "A single base string is required as input");
+	if (argc<2) {
+		printf("A single base string is required as input. \n Optionally you can also enter the buckets for the hash table as a 2nd input.\n");
         return 0;
 	}
 
-	int c, i, count, proceed=1, buffer_length = 20, str_length = strlen(argv[1]);
+	int c, i, buckets, collisions, count, proceed=1, buffer_length = 20, str_length = strlen(argv[1]);
 	size_t h;
 	Node* item;
-	saved_map = hashMapCreate((1 << (str_length+1)));
+
+	if (argc>2) {
+		buckets = atoi(argv[2]);
+	} else {
+		buckets = (1 << (str_length+1))-1;
+	}
+	saved_map = hashMapCreate(buckets);
+
 	sortStr(argv[1],str_length);
-	calculatePowerSet(argv[1],str_length);
+	collisions = calculatePowerSet(argv[1],str_length);
 
 	printPsetAndHashTest(saved_stack,saved_map);
+
+	printf("Hash table load factor: %d / %d = %f\n", (1<<str_length), buckets, ( (1<<str_length) / (float) buckets));
+	printf("Number of hash map insertions: %d\n", (1 << str_length));
+	printf("Number of collisions: %d or %.2f%%\n", collisions, 100 * collisions / (float) (1 << str_length));
 
 	char* user_str = malloc(sizeof(char) * buffer_length);
 	assert(user_str);
