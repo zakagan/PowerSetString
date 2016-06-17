@@ -21,6 +21,7 @@ void push(Node **head_node, const char* cstring, const int cstring_length, const
 
 Node* pop(Node **head_node);
 
+void destroyNode(Node *item);
 void destroyStack(Node *stack);
 
 #endif

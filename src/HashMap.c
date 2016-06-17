@@ -19,7 +19,7 @@ HashMap* hashMapCreate(size_t size)
     assert(m != 0);
 
     m->size = size;
-    m->map = calloc(m->size, sizeof(Node*));
+    m->map = calloc(size, sizeof(Node*));
     assert(m->map != 0);
 
     return m;

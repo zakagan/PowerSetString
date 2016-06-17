@@ -1,2 +1,5 @@
 # PowerSetString
-A demonstration of how singly linked lists can be used to generate power sets without recursion, and then saved in a hash table
+
+This is a C project that I have been tinkering with in order to better understand stacks and hash maps.
+
+There are two parts to this routine. First it calculates the power set of string, and then it loads the resulting power set into a hash map.

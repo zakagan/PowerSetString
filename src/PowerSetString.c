@@ -46,7 +46,7 @@ int calculatePowerSet(char *str, int str_length) {
 	while(temp_stack!=NULL) {
 		item=pop(&temp_stack);
 		printf("\t popped %s from the stack \n",item->S);
-		push(&saved_stack, item->S, item->length, str_length);    // consider removing saved_map and saved_stack from this function
+		push(&saved_stack, item->S, item->length, str_length);    // consider removing saved_map and saved_stack for a more functional design
 		collisions += hashMapInsert(saved_map, item);
 		printf("\t saved %s\n",saved_stack->S);
 
@@ -56,16 +56,15 @@ int calculatePowerSet(char *str, int str_length) {
 			printf("\t %s pushed to stack \n",temp_stack->S);
 			printf("\t next char: %c\n",str[i+1]);
 		}
-		free(item->S);
-		free(item);	
+		destroyNode(item);
 	}
-	printf("%s\n","Power Set calculation complete");
+	printf("Power Set calculation complete\n");
 	return collisions;
 }
 
 int main(int argc, char **argv) {
 	if (argc<2) {
-		printf("A single base string is required as input. \n Optionally you can also enter the buckets for the hash table as a 2nd input.\n");
+		printf("A single base string is required as input.\nOptionally you can also enter the buckets for the hash table as a 2nd input.\n");
         return 0;
 	}
 
@@ -76,6 +75,7 @@ int main(int argc, char **argv) {
 	if (argc>2) {
 		buckets = atoi(argv[2]);
 	} else {
+		printf("Default load factor is ~50%%\n");
 		buckets = (1 << (str_length+1))-1;
 	}
 	saved_map = hashMapCreate(buckets);
@@ -145,8 +145,6 @@ int main(int argc, char **argv) {
 		memset(user_str,0,buffer_length);
 	}
 	free(user_str);
-	destroyStack(saved_stack);
-	hashMapDestroy(saved_map);
 	return 0;
 }
 
