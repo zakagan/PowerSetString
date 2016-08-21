@@ -68,15 +68,15 @@ int main(int argc, char **argv) {
         return 0;
 	}
 
-	int c, i, buckets, collisions, count, proceed=1, buffer_length = 20, str_length = strlen(argv[1]);
-	size_t h;
+	int c, i, proceed=1, buffer_length = 20, str_length = strlen(argv[1]);
+	size_t h, buckets, count, collisions;
 	Node* item;
 
 	if (argc>2) {
 		buckets = atoi(argv[2]);
 	} else {
 		printf("Default load factor is ~50%%\n");
-		buckets = (1 << (str_length+1))-1;
+		buckets = (((size_t) 1) << (str_length+1))-1;
 	}
 	saved_map = hashMapCreate(buckets);
 
